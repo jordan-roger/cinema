@@ -1,5 +1,5 @@
 <?php
-class salle
+class salleRepository
 {
     private $idSalle;
     private $nomSalle;
@@ -7,7 +7,7 @@ class salle
     private $etat;
     private $nom;
 
-    public function __construct($idSalle,$nomSalle ,$capacite, $etat, ){
+    public function __construct($idSalle,$nomSalle ,$capacite, $etat ){
         $this->idSalle = $idSalle;
         $this->nomSalle = $nomSalle;
         $this->etat = $etat;
