@@ -1,7 +1,7 @@
 <?php
 class SeanceRepository
 {
-    private $connexionBdd;
+    private $connexionBdd;//private
 
     public function __construct()
     {
