@@ -78,7 +78,7 @@ $placesDisponibles = $salle->getCapacite() - $placesOccupees;
 
     <div class="page-header">
         <h1>Modifier la réservation</h1>
-        <p><?= htmlspecialchars($film->getTitre()) ?> — <?= htmlspecialchars($client->getNom().' '.$client->getPrenom()) ?></p>
+        <p><?= htmlspecialchars($film->getNom()) ?> — <?= htmlspecialchars($client->getNom().' '.$client->getPrenom()) ?></p>
     </div>
 
     <div class="alerte alerte-info">

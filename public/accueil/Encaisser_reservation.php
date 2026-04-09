@@ -81,7 +81,7 @@ $total = round($sousTotal - $reduction, 2);
 
     <div class="page-header">
         <h1>Encaissement</h1>
-        <p><?= htmlspecialchars($film->getTitre()) ?> — <?= htmlspecialchars($client->getNom().' '.$client->getPrenom()) ?></p>
+        <p><?= htmlspecialchars($film->getNom()) ?> — <?= htmlspecialchars($client->getNom().' '.$client->getPrenom()) ?></p>
     </div>
 
     <div class="form-card">

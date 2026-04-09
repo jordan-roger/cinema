@@ -8,7 +8,6 @@ class UtilisateurRepository
         $this->connexionBdd = (new Bdd())->getConnexionBdd();
     }
 
-    // Récupérer un utilisateur par son ID
     public function getUtilisateur($idUtilisateur)
     {
         $sql = "SELECT * FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
@@ -17,22 +16,21 @@ class UtilisateurRepository
         $req->execute();
         $result = $req->fetch();
 
-        if (!$result) {
-            return null;
-        }
+        if (!$result) return null;
 
-        $utilisateur = new utilisateur(
+        return new Utilisateur(
             $result["id_utilisateur"],
             $result["nom"],
-            $result["prenom"],
-            $result["email"],
-            $result["mot_de_passe"]
+            $result["mdp"],
+            $result["tel"],
+            $result["adresse"],
+            $result["date_de_naissance"],
+            $result["role"],
+            $result["etat_du_compte"],
+            $result["date_creation"]
         );
-
-        return $utilisateur;
     }
 
-    // Récupérer tous les utilisateurs
     public function getAllUtilisateurs()
     {
         $sql = "SELECT * FROM utilisateur";
@@ -41,32 +39,61 @@ class UtilisateurRepository
         $results = $req->fetchAll();
 
         $tabUtilisateurs = [];
-
         foreach ($results as $result) {
-            $utilisateur = new Utilisateur(
+            $tabUtilisateurs[] = new Utilisateur(
                 $result["id_utilisateur"],
                 $result["nom"],
-                $result["prenom"],
-                $result["email"],
-                $result["mot_de_passe"]
+                $result["mdp"],
+                $result["tel"],
+                $result["adresse"],
+                $result["date_de_naissance"],
+                $result["role"],
+                $result["etat_du_compte"],
+                $result["date_creation"]
             );
-            $tabUtilisateurs[] = $utilisateur;
         }
-
         return $tabUtilisateurs;
     }
 
-    // Ajouter un utilisateur
     public function ajouterUtilisateur(Utilisateur $utilisateur)
     {
-        $sql = "";
-
+        $sql = "INSERT INTO utilisateur (nom, mdp, tel, adresse, date_de_naissance, role, etat_du_compte) 
+                VALUES (:nom, :mdp, :tel, :adresse, :date_de_naissance, :role, :etat_du_compte)";
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':nom', $utilisateur->getNom());
-        $req->bindValue(':prenom', $utilisateur->getPrenom());
-        $req->bindValue(':email', $utilisateur->getEmail());
-        $req->bindValue(':mot_de_passe', $utilisateur->getMotDePasse());
+        $req->bindValue(':mdp', $utilisateur->getMdp());
+        $req->bindValue(':tel', $utilisateur->getTel());
+        $req->bindValue(':adresse', $utilisateur->getAdresse());
+        $req->bindValue(':date_de_naissance', $utilisateur->getDateDeNaissance());
+        $req->bindValue(':role', $utilisateur->getRole());
+        $req->bindValue(':etat_du_compte', $utilisateur->getEtatDuCompte());
+        $req->execute();
+    }
 
+    public function modifierUtilisateur(Utilisateur $utilisateur)
+    {
+        $sql = "UPDATE utilisateur 
+                SET nom = :nom, mdp = :mdp, tel = :tel, adresse = :adresse,
+                    date_de_naissance = :date_de_naissance, role = :role,
+                    etat_du_compte = :etat_du_compte
+                WHERE id_utilisateur = :id_utilisateur";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':nom', $utilisateur->getNom());
+        $req->bindValue(':mdp', $utilisateur->getMdp());
+        $req->bindValue(':tel', $utilisateur->getTel());
+        $req->bindValue(':adresse', $utilisateur->getAdresse());
+        $req->bindValue(':date_de_naissance', $utilisateur->getDateDeNaissance());
+        $req->bindValue(':role', $utilisateur->getRole());
+        $req->bindValue(':etat_du_compte', $utilisateur->getEtatDuCompte());
+        $req->bindValue(':id_utilisateur', $utilisateur->getIdUtilisateur(), PDO::PARAM_INT);
+        $req->execute();
+    }
+
+    public function supprimerUtilisateur($idUtilisateur)
+    {
+        $sql = "DELETE FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
         $req->execute();
     }
 }

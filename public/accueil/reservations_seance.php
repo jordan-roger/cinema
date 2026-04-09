@@ -12,10 +12,10 @@ require_once '../../src/repository/SalleRepository.php';
 require_once '../../src/repository/ReservationRepository.php';
 require_once '../../src/repository/UtilisateurRepository.php';
 
-if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'accueil') {
-    header('Location: ../connexion.php');
-    exit;
-}
+//if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'accueil') {
+//    header('Location: ../connexion.php');
+//    exit;
+//}
 
 if (!isset($_GET['id_seance'])) {
     header('Location: index.php');
@@ -39,7 +39,7 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réservations — <?= htmlspecialchars($film->getTitre()) ?></title>
+    <title>Réservations — <?= htmlspecialchars($film->getNom()) ?></title>
     <link rel="stylesheet" href="accueil.css">
 </head>
 <body>
@@ -57,7 +57,7 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
     <a href="index.php" class="back-link">← Retour aux séances</a>
 
     <div class="page-header">
-        <h1><?= htmlspecialchars($film->getTitre()) ?></h1>
+        <h1><?= htmlspecialchars($film->getNom()) ?></h1>
         <p>Salle <?= htmlspecialchars($salle->getNom()) ?> — <?= count($reservations) ?> réservation<?= count($reservations) > 1 ? 's' : '' ?></p>
     </div>
 
@@ -85,8 +85,8 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
                     $client = $userRepo->getUtilisateur($r->getIdUtilisateur());
 
                     $total = ($r->getNbPlace() * 15)
-                        + ($r->getNbPlaceStudent() * 10)
-                        + ($r->getNbPlaceSenior() * 5);
+                            + ($r->getNbPlaceStudent() * 10)
+                            + ($r->getNbPlaceSenior() * 5);
 
                     $badgeClass = match($r->getStatut()) {
                         'Encaissée' => 'badge-encaisse',
@@ -97,8 +97,10 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
                     <tr>
                         <td style="color:var(--texte-muted)">#<?= $r->getIdReservation() ?></td>
                         <td>
-                            <strong><?= htmlspecialchars($client->getNom().' '.$client->getPrenom()) ?></strong><br>
-                            <small style="color:var(--texte-muted)"><?= htmlspecialchars($client->getEmail()) ?></small>
+                            <strong><?= htmlspecialchars($client->getNom()) ?></strong><br>
+                            <small style="color:var(--texte-muted)">
+                                Tél : <?= htmlspecialchars($client->getTel() ?? '—') ?>
+                            </small>
                         </td>
                         <td>
                             <?php if ($r->getNbPlace() > 0): ?>

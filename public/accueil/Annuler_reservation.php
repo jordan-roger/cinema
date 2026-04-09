@@ -86,7 +86,7 @@ $total = ($reservation->getNbPlace() * 15)
             </div>
             <div class="recap-row">
                 <span class="recap-label">Film</span>
-                <span><?= htmlspecialchars($film->getTitre()) ?></span>
+                <span><?= htmlspecialchars($film->getNom()) ?></span>
             </div>
             <?php if ($reservation->getNbPlace() > 0): ?>
                 <div class="recap-row">
