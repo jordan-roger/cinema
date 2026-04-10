@@ -1,22 +1,24 @@
 <?php
 class CodePromo
 {
-    private $idCodePromo;
-    private $codePromo;
-    private $pourcentageReduction;
+    private $id_code_promo;
+    private $pourcentage_reservation;
     private $etat;
+    private $id_utilisateur;
+
+
 
     /**
-     * @param $idCodePromo
-     * @param $codePromo
-     * @param $pourcentageReduction
+     * @param $id_code_promo
+     * @param $pourcentage_reservation
+     * @param $id_utilisateur
      * @param $etat
      */
-    public function __construct($idCodePromo, $codePromo, $pourcentageReduction, $etat)
+    public function __construct($id_code_promo, $id_utilisateur, $pourcentage_reservation, $etat)
     {
-        $this->idCodePromo = $idCodePromo;
-        $this->codePromo = $codePromo;
-        $this->pourcentageReduction = $pourcentageReduction;
+        $this->id_code_promo = $id_code_promo;
+        $this->id_utilisateur = $id_utilisateur;
+        $this->pourcentage_reservation = $pourcentage_reservation;
         $this->etat = $etat;
     }
 
@@ -25,23 +27,31 @@ class CodePromo
      */
     public function getIdCodePromo()
     {
-        return $this->idCodePromo;
+        return $this->id_code_promo;
+    }
+
+    /**
+     * @param mixed $id_code_promo
+     */
+    public function setIdCodePromo($id_code_promo)
+    {
+        $this->id_code_promo = $id_code_promo;
     }
 
     /**
      * @return mixed
      */
-    public function getCodePromo()
+    public function getPourcentageReservation()
     {
-        return $this->codePromo;
+        return $this->pourcentage_reservation;
     }
 
     /**
-     * @return mixed
+     * @param mixed $pourcentage_reservation
      */
-    public function getPourcentageReduction()
+    public function setPourcentageReservation($pourcentage_reservation)
     {
-        return $this->pourcentageReduction;
+        $this->pourcentage_reservation = $pourcentage_reservation;
     }
 
     /**
@@ -53,35 +63,27 @@ class CodePromo
     }
 
     /**
-     * @param mixed $idCodePromo
-     */
-    public function setIdCodePromo($idCodePromo)
-    {
-        $this->idCodePromo = $idCodePromo;
-    }
-
-    /**
-     * @param mixed $codePromo
-     */
-    public function setCodePromo($codePromo)
-    {
-        $this->codePromo = $codePromo;
-    }
-
-    /**
-     * @param mixed $pourcentageReduction
-     */
-    public function setPourcentageReduction($pourcentageReduction)
-    {
-        $this->pourcentageReduction = $pourcentageReduction;
-    }
-
-    /**
      * @param mixed $etat
      */
     public function setEtat($etat)
     {
         $this->etat = $etat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdUtilisateur()
+    {
+        return $this->id_utilisateur;
+    }
+
+    /**
+     * @param mixed $id_utilisateur
+     */
+    public function setIdUtilisateur($id_utilisateur)
+    {
+        $this->id_utilisateur = $id_utilisateur;
     }
 
 

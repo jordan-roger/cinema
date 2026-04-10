@@ -1,7 +1,7 @@
 <?php
 class SeanceRepository
 {
-    private $connexionBdd;//private
+    private $connexionBdd;
 
     public function __construct()
     {
@@ -56,16 +56,42 @@ class SeanceRepository
         return $tabSeances;
     }
 
-    // Ajouter une séance
-    public function ajouterSeance(Seance $seance)
-    {
-        $sql = "";
+    public function ajouterSeance (Seance $seance){
+        $sql = "INSERT INTO seance(nombre_seance, date, id_film, id_salle) 
+                VALUES (:nombre_seance, :date, :id_film, :id_salle)";
 
         $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':nombre_seance', $seance->getNombreSeance());
+        $req->bindValue(':date', $seance->getDate());
         $req->bindValue(':id_film', $seance->getIdFilm());
-        $req->bindValue(':date_seance', $seance->getDateSeance());
-        $req->bindValue(':heure_seance', $seance->getHeureSeance());
-        $req->bindValue(':salle', $seance->getSalle());
+        $req->bindValue(':id_salle', $seance->getIdSalle());
+
+        $req->execute();
+    }
+
+    public function modifierSeance(Seance $seance){
+        $sql = "UPDATE seance 
+                SET nombre_seance = :nombre_seance, 
+                    date = :date, 
+                    id_film = :id_film, 
+                    id_salle = :id_salle 
+                WHERE id_seance = :id_seance";
+
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':nombre_seance', $seance->getNombreSeance());
+        $req->bindValue(':date', $seance->getDate());
+        $req->bindValue(':id_film', $seance->getIdFilm());
+        $req->bindValue(':id_salle', $seance->getIdSalle());
+        $req->bindValue(':id_seance', $seance->getIdSeance(), PDO::PARAM_INT);
+
+        $req->execute();
+    }
+
+    public function supprimerSeance(Seance $idSeance){
+        $sql = "DELETE FROM seance WHERE id_seance = :id_seance";
+
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_seance', $idSeance, PDO::PARAM_INT);
 
         $req->execute();
     }

@@ -10,7 +10,7 @@ class CodePromoRepository
 
     public function getCodePromo($idCodePromo)
     {
-        $sql = "SELECT * FROM CodePromo WHERE id_code_promo = :idCodePromo";
+        $sql = "SELECT * FROM code_promo WHERE id_code_promo = :idCodePromo";
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':idCodePromo', $idCodePromo);
         $req->execute();
@@ -20,7 +20,7 @@ class CodePromoRepository
 
     public function getAllCodePromo()
     {
-        $sql = "SELECT * FROM CodePromo";
+        $sql = "SELECT * FROM code_promo";
         $req = $this->connexionBdd->prepare($sql);
         $req->execute();
         $results = $req->fetchAll();
@@ -33,33 +33,30 @@ class CodePromoRepository
 
     public function ajouterCodePromo(CodePromo $codePromo)
     {
-        $sql = "INSERT INTO CodePromo (code_promo, pourcentage_reduction, etat) 
-                VALUES (:code_promo, :pourcentage_reduction, :etat)";
+        $sql = "INSERT INTO code_promo (pourcentage_reservation, id_utilisateur, etat) 
+                VALUES (:pourcentage_reservation, :id_utilisateur, :etat)";
         $req = $this->connexionBdd->prepare($sql);
-        $req->bindValue(':code_promo', $codePromo->getCodePromo());
-        $req->bindValue(':pourcentage_reduction', $codePromo->getPourcentageReduction());
+        $req->bindValue(':pourcentage_reservation', $codePromo->getPourcentageReservation());
+        $req->bindValue(':id_utilisateur', $codePromo->getIdUtilisateur());
         $req->bindValue(':etat', $codePromo->getEtat());
         $req->execute();
     }
 
     public function modifierCodePromo(CodePromo $codePromo)
     {
-        $sql = "UPDATE CodePromo 
-                SET code_promo = :code_promo, 
-                    pourcentage_reduction = :pourcentage_reduction, 
-                    etat = :etat 
-                WHERE id_code_promo = :id_code_promo";
+        $sql = "UPDATE code_promo 
+                SET id_code_promo = :id_code_promo, pourcentage_reservation = :pourcentage_reservation, etat = :etat, id_utilisateur = :id_utilisateur WHERE id_code_promo = :id_code_promo";
         $req = $this->connexionBdd->prepare($sql);
-        $req->bindValue(':code_promo', $codePromo->getCodePromo());
-        $req->bindValue(':pourcentage_reduction', $codePromo->getPourcentageReduction());
+        $req->bindValue(':id_code_promo', $codePromo->getIdCodePromo());
+        $req->bindValue(':id_utilisateur', $codePromo->getIdUtilisateur());
         $req->bindValue(':etat', $codePromo->getEtat());
-        $req->bindValue(':id_code_promo', $codePromo->getIdCodePromo(), PDO::PARAM_INT);
+        $req->bindValue(':pourcentage_reservation', $codePromo->getPourcentageReservation(), PDO::PARAM_INT);
         $req->execute();
     }
 
     public function supprimerCodePromo($idCodePromo)
     {
-        $sql = "DELETE FROM CodePromo WHERE id_code_promo = :id_code_promo";
+        $sql = "DELETE FROM code_promo WHERE id_code_promo = :id_code_promo";
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':id_code_promo', $idCodePromo, PDO::PARAM_INT);
         $req->execute();

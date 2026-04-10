@@ -5,7 +5,7 @@ class film
     private $nom;
     private $description;
     private $duree;
-    private $bande_annance;
+    private $bande_annonce;
     private $age_min;
     private $genre;
     private $date_sortie;
@@ -24,18 +24,19 @@ class film
      * @param $description
      * @param $nom
      */
-    public function __construct($id_film, $affichage, $realisateur, $date_sortie, $bande_annance, $genre, $age_min, $duree, $description, $nom)
+    public function __construct($id_film, $affichage, $realisateur, $date_sortie, $bande_annonce, $genre, $age_min, $duree, $description, $nom)
     {
         $this->id_film = $id_film;
+        $this->nom = $nom;
+        $this->description = $description;
         $this->affichage = $affichage;
+        $this->bande_annonce = $bande_annonce;
         $this->realisateur = $realisateur;
         $this->date_sortie = $date_sortie;
-        $this->bande_annance = $bande_annance;
         $this->genre = $genre;
         $this->age_min = $age_min;
         $this->duree = $duree;
-        $this->description = $description;
-        $this->nom = $nom;
+
     }
 
     /**
@@ -73,9 +74,9 @@ class film
     /**
      * @return mixed
      */
-    public function getBandeAnnance()
+    public function getBandeAnnonce()
     {
-        return $this->bande_annance;
+        return $this->bande_annonce;
     }
 
     /**
