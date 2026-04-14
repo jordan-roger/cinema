@@ -38,7 +38,7 @@ $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Séances du jour</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
 
@@ -93,7 +93,7 @@ $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 // Construction date/heure
                 $datetime_seance = $s['date'];
                 if (!empty($s['heure'])) {
-                    $datetime_seance = substr($s['date'], 0, 10) . ' ' . $s['heure'];
+                    $datetime_seance = substr($s['date'], 0, 10) . ' ConsultationSeanceJr.php' . $s['heure'];
                 }
 
                 $timestamp_seance = strtotime($datetime_seance);
