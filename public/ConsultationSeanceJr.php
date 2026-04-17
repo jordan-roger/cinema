@@ -42,7 +42,7 @@ $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<!-- NAV -->
+
 <nav>
     <a class="nav-logo" href="#"><span>CINÉ</span>LUMIÈRE</a>
     <div class="nav-links">
@@ -54,13 +54,13 @@ $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <main>
 
-    <!-- HEADER -->
+
     <div class="page-header">
         <h1>Séances du jour</h1>
         <p>Consultez les séances disponibles pour une date donnée</p>
     </div>
 
-    <!-- FORMULAIRE -->
+
     <form method="get" class="form-card">
         <div class="form-group">
             <label for="date">Choisir une date</label>
@@ -71,7 +71,7 @@ $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <br><br>
 
-    <!-- MESSAGE AUCUNE SEANCE -->
+
     <?php if ($clicked && empty($seances)) : ?>
         <div class="empty" style="color: var(--rouge);">
             <div class="empty-icon">🎬</div>
