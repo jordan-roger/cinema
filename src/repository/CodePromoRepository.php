@@ -5,8 +5,18 @@ class CodePromoRepository
 
     public function __construct()
     {
-        $this->connexionBdd = (new Bdd())->getConnexionBdd();
+        $this->connexionBdd = new Bdd()->getConnexionBdd();
     }
+
+    public function getNbrCP(): int
+    {
+
+        $sql = "SELECT COUNT(*) FROM code_promo";
+        $req = $this->connexionBdd->query($sql);
+        return $req->fetchColumn();
+
+    }
+
 
     public function getCodePromo($idCodePromo)
     {
