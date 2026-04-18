@@ -2,6 +2,8 @@
 class CodePromo
 {
     private $id_code_promo;
+    private $code;
+
     private $pourcentage_reservation;
     private $etat;
     private $id_utilisateur;
@@ -10,13 +12,15 @@ class CodePromo
 
     /**
      * @param $id_code_promo
+     * @param $code
      * @param $pourcentage_reservation
      * @param $id_utilisateur
      * @param $etat
      */
-    public function __construct($id_code_promo, $id_utilisateur, $pourcentage_reservation, $etat)
+    public function __construct($id_code_promo, $code, $id_utilisateur, $pourcentage_reservation, $etat)
     {
         $this->id_code_promo = $id_code_promo;
+        $this->code = $code;
         $this->id_utilisateur = $id_utilisateur;
         $this->pourcentage_reservation = $pourcentage_reservation;
         $this->etat = $etat;
@@ -41,6 +45,22 @@ class CodePromo
     /**
      * @return mixed
      */
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code): void
+    {
+        $this->code = $code;
+    }
     public function getPourcentageReservation()
     {
         return $this->pourcentage_reservation;

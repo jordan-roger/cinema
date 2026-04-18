@@ -4,7 +4,7 @@ session_start();
 require_once __DIR__ . '/../../src/bdd/Bdd.php';
 require_once __DIR__ . '/../../src/modele/utilisateur.php';
 require_once __DIR__ . '/../../src/repository/utilisateurRepository.php';
-
+echo __DIR__;
 // Vérification connexion et rôle admin
 /*if (empty($_SESSION['role']) || $_SESSION['role'] !== 'administrateur') {
     $_SESSION['erreurs'] = ["Accès refusé."];
@@ -127,6 +127,7 @@ $clients = array_filter($tousLesUtilisateurs, function(Utilisateur $u) {
                 <div class="alert alert-success">
                     <?php foreach ($_SESSION['succes'] as $msg): ?>
                         <p><?= htmlspecialchars($msg) ?></p>
+                    
                     <?php endforeach; ?>
                 </div>
                 <?php unset($_SESSION['succes']); ?>
@@ -177,29 +178,14 @@ $clients = array_filter($tousLesUtilisateurs, function(Utilisateur $u) {
                                     <div class="actions">
 
                                         <!-- Bloquer / Débloquer -->
-                                        <?php if ($client->getEtatDuCompte() === 'bloqué'): ?>
-                                            <form method="post" action="../../src/traitement/admin/traitementGestionClients.php"
-                                                  onsubmit="return confirm('Débloquer ce client ?');">
-                                                <input type="hidden" name="id_utilisateur" value="<?= $client->getIdUtilisateur() ?>">
-                                                <input type="hidden" name="action" value="debloquer">
-                                                <button type="submit" class="btn btn-success">✅ Débloquer</button>
-                                            </form>
-                                        <?php else: ?>
-                                            <form method="post" action="../../src/traitement/admin/traitementGestionClients.php"
+                                        <form method="post" action="/cinema/src/traitement/admin/traitementGestionClients.php"
                                                   onsubmit="return confirm('Bloquer ce client ?');">
                                                 <input type="hidden" name="id_utilisateur" value="<?= $client->getIdUtilisateur() ?>">
                                                 <input type="hidden" name="action" value="bloquer">
                                                 <button type="submit" class="btn btn-warning">🚫 Bloquer</button>
                                             </form>
-                                        <?php endif; ?>
+                                        
 
-                                        <!-- Supprimer -->
-                                        <form method="post" action="../../src/traitement/admin/traitementGestionClients.php"
-                                              onsubmit="return confirm('Supprimer définitivement ce client ? Cette action est irréversible.');">
-                                            <input type="hidden" name="id_utilisateur" value="<?= $client->getIdUtilisateur() ?>">
-                                            <input type="hidden" name="action" value="supprimer">
-                                            <button type="submit" class="btn btn-danger">🗑️ Supprimer</button>
-                                        </form>
 
                                     </div>
                                 </td>

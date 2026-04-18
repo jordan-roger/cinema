@@ -5,7 +5,7 @@ class FilmRepository
 
     public function __construct()
     {
-        $this->connexionBdd = (new Bdd())->getConnexionBdd();
+        $this->connexionBdd = new Bdd()->getConnexionBdd();
     }
 
     public function getFilm($idfilm)
