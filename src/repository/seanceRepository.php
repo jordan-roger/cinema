@@ -8,7 +8,6 @@ class SeanceRepository
         $this->connexionBdd = (new Bdd())->getConnexionBdd();
     }
 
-    // Récupérer une séance par son ID
     public function getSeance($idSeance)
     {
         $sql = "SELECT * FROM seance WHERE id_seance = :id_seance";
@@ -17,22 +16,17 @@ class SeanceRepository
         $req->execute();
         $result = $req->fetch();
 
-        if (!$result) {
-            return null;
-        }
+        if (!$result) return null;
 
-        $seance = new Seance(
+        return new Seance(
             $result["id_seance"],
+            $result["nombre_seance"],
+            $result["date"],
             $result["id_film"],
-            $result["date_seance"],
-            $result["heure_seance"],
-            $result["salle"]
+            $result["id_salle"]
         );
-
-        return $seance;
     }
 
-    // Récupérer toutes les séances
     public function getAllSeances()
     {
         $sql = "SELECT * FROM seance";
@@ -41,23 +35,41 @@ class SeanceRepository
         $results = $req->fetchAll();
 
         $tabSeances = [];
-
         foreach ($results as $result) {
-            $seance = new Seance(
+            $tabSeances[] = new Seance(
                 $result["id_seance"],
+                $result["nombre_seance"],
+                $result["date"],
                 $result["id_film"],
-                $result["date_seance"],
-                $result["heure_seance"],
-                $result["salle"]
+                $result["id_salle"]
             );
-            $tabSeances[] = $seance;
         }
-
         return $tabSeances;
     }
 
-    public function ajouterSeance (Seance $seance){
-        $sql = "INSERT INTO seance(nombre_seance, date, id_film, id_salle) 
+    public function getSeancesDuJour()
+    {
+        $sql = "SELECT * FROM seance WHERE date = CURDATE()";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->execute();
+        $results = $req->fetchAll();
+
+        $tabSeances = [];
+        foreach ($results as $result) {
+            $tabSeances[] = new Seance(
+                $result["id_seance"],
+                $result["nombre_seance"],
+                $result["date"],
+                $result["id_film"],
+                $result["id_salle"]
+            );
+        }
+        return $tabSeances;
+    }
+
+    public function ajouterSeance(Seance $seance)
+    {
+        $sql = "INSERT INTO seance (nombre_seance, date, id_film, id_salle) 
                 VALUES (:nombre_seance, :date, :id_film, :id_salle)";
 
         $req = $this->connexionBdd->prepare($sql);
@@ -65,11 +77,11 @@ class SeanceRepository
         $req->bindValue(':date', $seance->getDate());
         $req->bindValue(':id_film', $seance->getIdFilm());
         $req->bindValue(':id_salle', $seance->getIdSalle());
-
         $req->execute();
     }
 
-    public function modifierSeance(Seance $seance){
+    public function modifierSeance(Seance $seance)
+    {
         $sql = "UPDATE seance 
                 SET nombre_seance = :nombre_seance, 
                     date = :date, 
@@ -83,17 +95,14 @@ class SeanceRepository
         $req->bindValue(':id_film', $seance->getIdFilm());
         $req->bindValue(':id_salle', $seance->getIdSalle());
         $req->bindValue(':id_seance', $seance->getIdSeance(), PDO::PARAM_INT);
-
         $req->execute();
     }
 
-    public function supprimerSeance(Seance $idSeance){
+    public function supprimerSeance($idSeance)
+    {
         $sql = "DELETE FROM seance WHERE id_seance = :id_seance";
-
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':id_seance', $idSeance, PDO::PARAM_INT);
-
         $req->execute();
     }
 }
-

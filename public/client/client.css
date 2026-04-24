@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+    --rouge: #e8000d;
+    --rouge-sombre: #a50009;
+    --noir: #0a0a0a;
+    --noir-card: #141414;
+    --noir-input: #1c1c1c;
+    --gris: #2a2a2a;
+    --gris-clair: #555;
+    --texte: #e8e8e8;
+    --texte-muted: #888;
+    --border: #2a2a2a;
+    --succes: #22c55e;
+    --warning: #f59e0b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--noir);
+    color: var(--texte);
+    min-height: 100vh;
+    font-size: 15px;
+}
+
+nav {
+    background: var(--noir-card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--texte);
+    text-decoration: none;
+}
+.nav-logo span { color: var(--rouge); }
+
+.nav-links { display: flex; gap: 8px; align-items: center; }
+.nav-links a {
+    color: var(--texte-muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--texte); background: var(--gris); }
+
+.nav-badge {
+    background: var(--rouge);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+main { padding: 48px 40px; max-width: 1100px; margin: 0 auto; }
+
+.page-header {
+    margin-bottom: 32px;
+    border-left: 4px solid var(--rouge);
+    padding-left: 20px;
+}
+.page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.page-header p { color: var(--texte-muted); font-size: 14px; }
+
+/* COUNTDOWN */
+.countdown-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--noir-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--rouge);
+    padding: 14px 20px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--texte-muted);
+}
+
+.countdown-timer {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--texte);
+}
+.countdown-timer.urgent { color: var(--rouge); }
+
+/* TARIFS BAR */
+.tarifs-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.tarif-item {
+    flex: 1;
+    background: var(--noir-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+}
+
+.tarif-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--texte-muted);
+    margin-bottom: 8px;
+}
+
+.tarif-prix {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: var(--rouge);
+}
+
+.tarif-note {
+    display: block;
+    font-size: 11px;
+    color: var(--texte-muted);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* SÉANCES GRID */
+.seances-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.seance-card {
+    background: var(--noir-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.seance-card:hover { border-color: var(--rouge); }
+.seance-card.complet { opacity: 0.6; }
+
+.seance-card-header {
+    background: var(--gris);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.seance-film {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.seance-salle {
+    font-size: 12px;
+    color: var(--texte-muted);
+    background: var(--noir-card);
+    padding: 3px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+}
+
+.seance-card-body { padding: 20px; }
+
+/* JAUGE */
+.places-jauge { margin-bottom: 20px; }
+
+.places-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.places-restantes {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--succes);
+}
+.places-restantes.urgent { color: var(--rouge); }
+.places-total { font-size: 12px; color: var(--texte-muted); }
+
+.jauge-bar {
+    height: 6px;
+    background: var(--gris);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.jauge-fill {
+    height: 100%;
+    background: var(--succes);
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+.jauge-fill.warning { background: var(--warning); }
+.jauge-fill.urgent { background: var(--rouge); }
+
+/* TARIF CHOIX */
+.tarif-choix {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tarif-option input[type="radio"] { display: none; }
+
+.tarif-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: var(--noir-input);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.tarif-option input:checked + .tarif-btn {
+    border-color: var(--rouge);
+    background: #1a0404;
+}
+
+.tarif-btn:hover { border-color: var(--gris-clair); }
+
+.tarif-nom {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--texte-muted);
+    margin-bottom: 6px;
+}
+
+.tarif-montant {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--rouge);
+    letter-spacing: 1px;
+}
+
+.tarif-option input:checked + .tarif-btn .tarif-nom { color: var(--texte); }
+
+/* FORM */
+.form-group { margin-bottom: 16px; }
+
+label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--texte-muted);
+    margin-bottom: 6px;
+}
+
+input[type="text"] {
+    width: 100%;
+    background: var(--noir-input);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--texte);
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+input[type="text"]:focus { outline: none; border-color: var(--rouge); }
+
+.note-info {
+    font-size: 12px;
+    color: var(--texte-muted);
+    margin-bottom: 16px;
+    padding: 10px;
+    background: var(--gris);
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-rouge { background: var(--rouge); color: #fff; }
+.btn-rouge:hover { background: var(--rouge-sombre); }
+.btn-outline { background: transparent; color: var(--texte); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--rouge); color: var(--rouge); }
+.btn-full { width: 100%; }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+
+/* ALERTES */
+.alerte {
+    padding: 14px 18px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-left: 4px solid;
+}
+.alerte-danger  { background: #3b0808; color: #fca5a5; border-color: #dc2626; }
+.alerte-warning { background: #431407; color: #fdba74; border-color: var(--warning); }
+.alerte-succes  { background: #14532d; color: #86efac; border-color: var(--succes); }
+.alerte-info    { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
+
+/* EMPTY */
+.empty { text-align: center; padding: 60px 20px; color: var(--texte-muted); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty h3 { font-size: 18px; color: var(--texte); margin-bottom: 8px; }
+
+/* TABLE mes réservations */
+.table-wrapper {
+    background: var(--noir-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--gris); }
+th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texte-muted);
+}
+td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #1a1a1a; }
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.badge-valider  { background: #1c3a5e; color: #93c5fd; }
+.badge-encaisse { background: #14532d; color: #86efac; }
+.badge-annule   { background: #3b0808; color: #fca5a5; }
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--texte-muted);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 28px;
+    transition: color 0.2s;
+}
+.back-link:hover { color: var(--rouge); }
