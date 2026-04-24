@@ -1,5 +1,5 @@
 <?php
-class film
+class Film
 {
     private $id_film;
     private $nom;
@@ -11,33 +11,53 @@ class film
     private $date_sortie;
     private $realisateur;
     private $affichage;
+    private $statut;
+
 
     /**
      * @param $id_film
+     * @param $nom
      * @param $affichage
      * @param $realisateur
      * @param $date_sortie
-     * @param $bande_annance
+     * @param $bande_annonce
      * @param $genre
      * @param $age_min
      * @param $duree
      * @param $description
-     * @param $nom
-     */
-    public function __construct($id_film, $affichage, $realisateur, $date_sortie, $bande_annonce, $genre, $age_min, $duree, $description, $nom)
+     * @param $statut
+ */
+    public function __construct($id_film, $nom, $description, $duree, $bande_annonce, $age_min, $genre, $date_sortie, $realisateur, $affichage, $statut)
     {
         $this->id_film = $id_film;
         $this->nom = $nom;
         $this->description = $description;
-        $this->affichage = $affichage;
-        $this->bande_annonce = $bande_annonce;
-        $this->realisateur = $realisateur;
-        $this->date_sortie = $date_sortie;
-        $this->genre = $genre;
-        $this->age_min = $age_min;
         $this->duree = $duree;
-
+        $this->bande_annonce = $bande_annonce;
+        $this->age_min = $age_min;
+        $this->genre = $genre;
+        $this->date_sortie = $date_sortie;
+        $this->realisateur = $realisateur;
+        $this->affichage = $affichage;
+        $this->statut = $statut;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * @param mixed $statut
+     */
+    public function setStatut($statut): void
+    {
+        $this->statut = $statut;
+    }
+
 
     /**
      * @return mixed
@@ -152,11 +172,11 @@ class film
     }
 
     /**
-     * @param mixed $bande_annance
+     * @param mixed $bande_annonce
      */
-    public function setBandeAnnance($bande_annance)
+    public function setBandeAnnonce($bande_annonce)
     {
-        $this->bande_annance = $bande_annance;
+        $this->bande_annonce = $bande_annonce;
     }
 
     /**

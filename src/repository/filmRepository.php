@@ -5,7 +5,7 @@ class FilmRepository
 
     public function __construct()
     {
-        $this->connexionBdd = new Bdd()->getConnexionBdd();
+        $this->connexionBdd = (new Bdd())->getConnexionBdd();
     }
 
     public function getFilm($idfilm)
@@ -19,7 +19,7 @@ class FilmRepository
         return new Film (
             $result["id_film"], $result["nom"], $result["description"],
             $result["duree"],$result["bande_annonce"], $result["age_min"], $result["genre"],
-            $result["date_sortie"], $result["realisateur"], $result["affichage"]);
+            $result["date_sortie"], $result["realisateur"], $result["affichage"], $result["statut"]);
     }
 
     public function getAllFilms()
@@ -33,15 +33,15 @@ class FilmRepository
             $tabFilms[] = new Film (
                 $result["id_film"], $result["nom"], $result["description"],
             $result["duree"],$result["bande_annonce"], $result["age_min"], $result["genre"],
-            $result["date_sortie"], $result["realisateur"], $result["affichage"]);
+            $result["date_sortie"], $result["realisateur"], $result["affichage"],$result["statut"]);
         }
         return $tabFilms;
     }
 
     public function ajouterFilm(Film $film)
     {
-        $sql = "INSERT INTO film (nom, description, duree, bande_annonce, age_min, genre, date_sortie, realisateur, affichage) 
-                VALUES (:nom, :description, :duree, :bande_annonce, :age_min, :genre, :date_sortie, :realisateur, :affichage)";
+        $sql = "INSERT INTO film (nom, description, duree, bande_annonce, age_min, genre, date_sortie, realisateur, affichage, statut) 
+                VALUES (:nom, :description, :duree, :bande_annonce, :age_min, :genre, :date_sortie, :realisateur, :affichage, :statut)";
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':nom', $film->getNom());
         $req->bindValue(':description', $film->getDescription());
@@ -52,6 +52,7 @@ class FilmRepository
         $req->bindValue(':date_sortie', $film->getDateSortie());
         $req->bindValue(':realisateur', $film->getRealisateur());
         $req->bindValue(':affichage', $film->getAffichage());
+        $req->bindValue(':statut', $film->getStatut());
 
         $req->execute();
     }
@@ -68,8 +69,10 @@ class FilmRepository
                     date_sortie = :date_sortie,
                     realisateur = :realisateur,
                     affichage = :affichage,
+                    statut = :statut
                 WHERE id_film = :id_film";
         $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_film', $film->getIdFilm(), PDO::PARAM_INT); // ← manquant
         $req->bindValue(':nom', $film->getNom());
         $req->bindValue(':description', $film->getDescription());
         $req->bindValue(':duree', $film->getDuree());
@@ -79,14 +82,17 @@ class FilmRepository
         $req->bindValue(':date_sortie', $film->getDateSortie());
         $req->bindValue(':realisateur', $film->getRealisateur());
         $req->bindValue(':affichage', $film->getAffichage());
+        $req->bindValue(':statut', $film->getStatut());
+
+
         $req->execute();
     }
 
-    public function supprimerFilm($idfilm)
+    public function supprimerFilm($id_film)
     {
         $sql = "DELETE FROM film WHERE id_film = :id_film";
         $req = $this->connexionBdd->prepare($sql);
-        $req->bindValue(':idfilm', $idfilm, PDO::PARAM_INT);
+        $req->bindValue(':id_film', $id_film, PDO::PARAM_INT);
         $req->execute();
     }
 }
