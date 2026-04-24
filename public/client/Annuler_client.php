@@ -9,7 +9,7 @@ require_once '../../src/repository/SeanceRepository.php';
 if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {
     header('Location: ../connexion.php');
     exit;
-}
+}//l
 
 $idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];
 $idReservation = (int)($_GET['id'] ?? 0);
