@@ -114,6 +114,17 @@ class UtilisateurRepository
         $req->execute();
     }
 
+    public function bloquerUtilisateur(int $idUtilisateur){
+        $mdpTemporaire = bin2hex(random_bytes(16));
+        $mdpHash = password_hash($mdpTemporaire, PASSWORD_DEFAULT);
+        $sql = "UPDATE utilisateur 
+            SET etat_du_compte = 'bloqué', mdp = :mdp 
+            WHERE id_utilisateur = :id_utilisateur";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':mdp', $mdpHash);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+    }
     public function supprimerUtilisateur($idUtilisateur)
     {
         $sql = "DELETE FROM utilisateur WHERE id_utilisateur = :id_utilisateur";

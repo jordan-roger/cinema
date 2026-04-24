@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../../src/repository/utilisateurRepository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['erreurs'] = ["Méthode non autorisée."];
-    header('Location: ../admin/GestionClients.php');
+    header('Location: /cinema/public/admin/GestionClients.php');
     exit;
 }
 
@@ -28,13 +28,13 @@ $idUtilisateur = isset($_POST['id_utilisateur']) ? (int)$_POST['id_utilisateur']
 
 if ($idUtilisateur <= 0) {
     $_SESSION['erreurs'] = ["Identifiant utilisateur invalide."];
-    header('Location: ../admin/GestionClients.php');
+    header('Location: /cinema/public/admin/GestionClients.php');
     exit;
 }
 
 if ((int)$_SESSION['id_utilisateur'] === $idUtilisateur) {
     $_SESSION['erreurs'] = ["Vous ne pouvez pas effectuer cette action sur votre propre compte."];
-    header('Location: ../admin/GestionClients.php');
+    header('Location: /cinema/public/admin/GestionClients.php');
     exit;
 }
 
@@ -43,35 +43,21 @@ $utilisateur = $utilisateurRepository->getUtilisateur($idUtilisateur);
 
 if ($utilisateur === null) {
     $_SESSION['erreurs'] = ["Utilisateur introuvable."];
-    header('Location: ../admin/GestionClients.php');
+    header('Location: /cinema/public/admin/GestionClients.php');
     exit;
 }
 
 // On s'assure que c'est bien un client
-if ($utilisateur->getRole() !== 'client') {
+if ($utilisateur->getRole() != 'user') {
     $_SESSION['erreurs'] = ["Cette action n'est autorisée que sur les comptes clients."];
-    header('Location: ../admin/GestionClients.php');
+    header('Location: /cinema/public/admin/GestionClients.php');
     exit;
 }
 
 try {
     if ($action === 'bloquer') {
-
-        $utilisateur->setEtatDuCompte('bloqué');
-        $utilisateurRepository->modifierUtilisateur($utilisateur);
+        $utilisateurRepository->bloquerUtilisateur($idUtilisateur);
         $_SESSION['succes'] = ["Le client a été bloqué avec succès."];
-
-    } elseif ($action === 'debloquer') {
-
-        $utilisateur->setEtatDuCompte('actif');
-        $utilisateurRepository->modifierUtilisateur($utilisateur);
-        $_SESSION['succes'] = ["Le client a été débloqué avec succès."];
-
-    } elseif ($action === 'supprimer') {
-
-        $utilisateurRepository->supprimerUtilisateur($idUtilisateur);
-        $_SESSION['succes'] = ["Le client a été supprimé avec succès."];
-
     } else {
         $_SESSION['erreurs'] = ["Action non reconnue."];
     }
@@ -81,5 +67,5 @@ try {
     $_SESSION['erreurs'] = ["Une erreur est survenue. Veuillez réessayer."];
 }
 
-header('Location: ../admin/GestionClients.php');
+header('Location: /cinema/public/admin/GestionClients.php');
 exit;
