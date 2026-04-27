@@ -1,6 +1,5 @@
 <?php
-class Utilisateur
-{
+class Utilisateur{
     private $id_utilisateur; //Pour tous les utilisateurs
     private $prenom; //Pour tous les utilisateurs
     private $nom; //Pour tous les utilisateurs
