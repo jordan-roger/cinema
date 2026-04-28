@@ -7,14 +7,15 @@ require_once '../../src/repository/CodePromoRepository.php';
 // exigerConnexion();
 // exigerAdmin();
 
-// ⚠️ Ici tu remplaceras par tes Repository
+// ⚠️ Ici, tu remplaceras par tes Repository
 // Exemple :
 $nbSalles = 5;
 $nbFilms = 12;
 $nbSeances = 8;
 $nbClients = 42;
 $nbReservations = 27;
-$nbCodesPromo = new CodePromoRepository()->getNbrCP();
+$nbCodesPromo = 12;
+        //new CodePromoRepository()->getNbrCP();
 
 
 // Simuler données (à remplacer par BDD)

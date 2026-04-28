@@ -176,4 +176,26 @@ class ReservationRepository
         $req->bindValue(':id_reservation', $idReservation, PDO::PARAM_INT);
         $req->execute();
     }
+
+    public function getAllReservationsAvecDetails()
+    {
+        $sql = "SELECT r.*, 
+                u.nom, u.prenom, u.email,
+                s.date,
+                f.nom AS nom_film,
+                sa.nom AS nom_salle,
+                cp.code AS code_promo,
+                cp.pourcentage_reservation
+            FROM reservation r
+            LEFT JOIN utilisateur u ON r.id_utilisateur = u.id_utilisateur
+            LEFT JOIN seance s ON r.id_seance = s.id_seance
+            LEFT JOIN film f ON s.id_film = f.id_film
+            LEFT JOIN salle sa ON s.id_salle = sa.id_salle
+            LEFT JOIN code_promo cp ON r.id_code_promo = cp.id_code_promo
+            ORDER BY s.date DESC";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
