@@ -1,33 +1,53 @@
 <?php
 session_start();
-require_once '../../src/bdd/Bdd.php';
-require_once '../../src/repository/CodePromoRepository.php';
 
-// 🔐 Sécurité (à adapter à ton projet)
+require_once __DIR__ . '/../../src/bdd/Bdd.php';
+require_once __DIR__ . '/../../src/modele/Film.php';
+require_once __DIR__ . '/../../src/modele/utilisateur.php';
+require_once __DIR__ . '/../../src/modele/salle.php';
+require_once __DIR__ . '/../../src/modele/seance.php';
+require_once __DIR__ . '/../../src/modele/reservation.php';
+require_once __DIR__ . '/../../src/modele/CodePromo.php';
+require_once __DIR__ . '/../../src/repository/filmRepository.php';
+require_once __DIR__ . '/../../src/repository/utilisateurRepository.php';
+require_once __DIR__ . '/../../src/repository/salleRepository.php';
+require_once __DIR__ . '/../../src/repository/seanceRepository.php';
+require_once __DIR__ . '/../../src/repository/reservationRepository.php';
+require_once __DIR__ . '/../../src/repository/CodePromoRepository.php';
+
 // exigerConnexion();
 // exigerAdmin();
 
-// ⚠️ Ici, tu remplaceras par tes Repository
-// Exemple :
-$nbSalles = 5;
-$nbFilms = 12;
-$nbSeances = 8;
-$nbClients = 42;
-$nbReservations = 27;
-$nbCodesPromo = 12;
-        //new CodePromoRepository()->getNbrCP();
+$filmRepository        = new FilmRepository();
+$utilisateurRepository = new UtilisateurRepository();
+$salleRepository       = new SalleRepository();
+$seanceRepository      = new SeanceRepository();
+$reservationRepository = new ReservationRepository();
+$codePromoRepository   = new CodePromoRepository();
 
+// Compteurs
+$nbFilms        = count($filmRepository->getAllFilms());
+$nbSalles       = count($salleRepository->getAllSalles());
+$nbSeances      = count($seanceRepository->getAllSeances());
+$nbCodesPromo   = $codePromoRepository->getNbrCP();
 
-// Simuler données (à remplacer par BDD)
+// Uniquement les clients
+$tousLesUtilisateurs = $utilisateurRepository->getAllUtilisateurs();
+$nbClients = count(array_filter($tousLesUtilisateurs, fn($u) => $u->getRole() === 'client'));
+
+// Toutes les réservations
+$toutesLesReservations = $reservationRepository->getAllReservations();
+$nbReservations = count($toutesLesReservations);
+
+// 5 derniers films ajoutés
 $lastFilms = [ //creer une requete pour ca
-    ["nom" => "Inception", "date" => "2024-01-01"],
-    ["nom" => "Avatar", "date" => "2024-01-02"]
+        ["nom" => "Inception", "date" => "2024-01-01"],
+        ["nom" => "Avatar", "date" => "2024-01-02"]
 ];
-
+// 5 derniers clients inscrits
 $lastClients = [
-    ["email" => "test@mail.com", "date" => "2024-01-03"]
-];
-?>
+        ["email" => "test@mail.com", "date" => "2024-01-03"]
+];?>
 
 <!DOCTYPE html>
 <html lang="fr">

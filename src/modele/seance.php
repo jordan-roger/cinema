@@ -2,22 +2,19 @@
 class seance
 {
     private $id_seance;
-    private $nombre_seance;
     private $date;
     private $id_film;
     private $id_salle;
 
     /**
      * @param $id_seance
-     * @param $nombre_seance
      * @param $date
      * @param $id_film
      * @param $id_salle
      */
-    public function __construct($id_seance, $nombre_seance, $date, $id_film, $id_salle)
+    public function __construct($id_seance, $date, $id_film, $id_salle)
     {
         $this->id_seance = $id_seance;
-        $this->nombre_seance = $nombre_seance;
         $this->date = $date;
         $this->id_film = $id_film;
         $this->id_salle = $id_salle;
@@ -31,13 +28,7 @@ class seance
         return $this->id_seance;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNombreSeance()
-    {
-        return $this->nombre_seance;
-    }
+
 
     /**
      * @return mixed
@@ -69,14 +60,6 @@ class seance
     public function setIdSeance($id_seance)
     {
         $this->id_seance = $id_seance;
-    }
-
-    /**
-     * @param mixed $nombre_seance
-     */
-    public function setNombreSeance($nombre_seance)
-    {
-        $this->nombre_seance = $nombre_seance;
     }
 
     /**

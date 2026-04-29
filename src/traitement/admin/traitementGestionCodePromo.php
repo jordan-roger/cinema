@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $idCodePromo = isset($_POST['id_code_promo']) ? (int) $_POST['id_code_promo'] : 0;
 
+$code = isset($_POST['code']) ? trim($_POST['code']) : '';
+$pourcentage = isset($_POST['pourcentage_reservation']) ? (int) $_POST['pourcentage_reservation'] : 0;
+
 if ($idCodePromo <= 0 && $action !== 'ajouter') {
     $_SESSION['erreurs'] = ["Identifiant du code promo invalide."];
     header('Location: /cinema/public/admin/GestionCodePromo.php');
@@ -25,8 +28,6 @@ $codePromoRepository = new CodePromoRepository();
 try {
     if ($action === 'ajouter') {
 
-        $code = isset($_POST['code']) ? trim($_POST['code']) : '';
-        $pourcentage = isset($_POST['pourcentage_reservation']) ? (int) $_POST['pourcentage_reservation'] : 0;
 
         if ($code === '') {
             $_SESSION['erreurs'] = ["Le code promo est obligatoire."];
