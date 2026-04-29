@@ -4,7 +4,7 @@ class Salle
     private $id_salle;
     private $nom;
     private $capacite;
-    private $etat;
+    private $etat; //enum('disponible', 'maintenance')
 
     /**
      * @param $id_salle
