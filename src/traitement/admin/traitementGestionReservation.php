@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../src/repository/reservationRepository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['erreurs'] = ["Méthode non autorisée."];
-    header('Location: /cinema/public/admin/GestionFilm.php');
+    header('Location: /cinema/public/admin/GestionReservation.php');
     exit;
 }
 

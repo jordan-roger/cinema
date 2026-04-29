@@ -88,4 +88,15 @@ public function modifierSalle(Salle $salle){
         $req->execute();
     }
 
+    public function aDesSeancesFutures(int $idSalle): bool
+    {
+        $sql = "SELECT COUNT(*) FROM seance 
+            WHERE id_salle = :id_salle 
+            AND date > CURDATE()";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_salle', $idSalle, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchColumn() > 0;
+    }
+
 }
