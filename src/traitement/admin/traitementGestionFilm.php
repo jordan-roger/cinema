@@ -112,14 +112,14 @@ try {
         $_SESSION['succes'] = ["Le film a été modifié avec succès."];
 
     }elseif ($action === 'supprimer') {
-        /*verification de ratachement de seance a faire
-        Vérification séances rattachées — mis de côté si pas encore implémenté
+        //verification de ratachement de seance a faire
+        //Vérification séances rattachées — mis de côté si pas encore implémenté
          $aDesSeances = $filmRepository->aDesSeances($idFilm);
          if ($aDesSeances) {
         $_SESSION['erreurs'] = ["Impossible de supprimer ce film, il a des séances rattachées."];
         header('Location: /cinema/public/admin/GestionFilm.php');
         exit;
-        } */
+        }
         $filmRepository->supprimerFilm($idFilm);
         $_SESSION['succes'] = ["Le film a été supprimé avec succès."];
 
