@@ -92,6 +92,7 @@ $tousLesFilms = $filmRepository->getAllFilms();
             <a class="nav-item" href="dashboard.php">🏠 Tableau de bord</a>
             <div class="nav-label">Gestion</div>
             <a class="nav-item" href="GestionClients.php">👥 Clients</a>
+            <a class="nav-item active" href="GestionEmployes.php">🧑‍💼 Employés</a>
             <a class="nav-item active" href="GestionFilm.php">🎞️ Films</a>
             <a class="nav-item" href="GestionSalle.php">🏛️ Salles</a>
             <a class="nav-item" href="GestionSeances.php">📅 Séances</a>

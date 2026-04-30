@@ -132,7 +132,7 @@ $employes = array_values($employes);
             <div class="card">
                 <div class="card-header">Ajouter un employé</div>
                 <div class="card-body">
-                    <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php">
+                    <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmploye.php">
                         <input type="hidden" name="action" value="ajouter">
                         <div class="form-grid">
                             <div class="form-group">
@@ -152,6 +152,10 @@ $employes = array_values($employes);
                                 <input type="password" name="mdp" required>
                             </div>
                             <div class="form-group">
+                                <label>Confirmer le mot de passe *</label>
+                                <input type="password" name="mdp_confirm" required>
+                            </div>
+                            <div class="form-group">
                                 <label>Rôle *</label>
                                 <select name="role" required>
                                     <option value="">-- Choisir --</option>
@@ -166,6 +170,56 @@ $employes = array_values($employes);
                         </div>
                         <div class="form-actions" style="margin-top: 16px;">
                             <button type="submit" class="btn btn-primary">➕ Ajouter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Formulaire modification -->
+            <div class="card">
+                <div class="card-header">Modifier un employé</div>
+                <div class="card-body">
+                    <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php">
+                        <input type="hidden" name="action" value="modifier">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>ID de l'employé à modifier *</label>
+                                <input type="number" name="id_utilisateur" placeholder="Ex: 3" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nom *</label>
+                                <input type="text" name="nom" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Prénom *</label>
+                                <input type="text" name="prenom" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nouveau mot de passe *</label>
+                                <input type="password" name="mdp" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmer le mot de passe *</label>
+                                <input type="password" name="mdp_confirm" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Rôle *</label>
+                                <select name="role" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="accueil">Accueil</option>
+                                    <option value="admin">Administrateur</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Téléphone</label>
+                                <input type="text" name="tel" placeholder="Optionnel">
+                            </div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 16px;">
+                            <button type="submit" class="btn btn-primary">✏️ Modifier</button>
                         </div>
                     </form>
                 </div>
@@ -211,14 +265,14 @@ $employes = array_values($employes);
 
                                         <!-- Bloquer / Activer -->
                                         <?php if ($employe->getEtatDuCompte() === 'bloqué'): ?>
-                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php"
+                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmploye.php"
                                                   onsubmit="return confirm('Activer ce compte ?');">
                                                 <input type="hidden" name="id_utilisateur" value="<?= $employe->getIdUtilisateur() ?>">
                                                 <input type="hidden" name="action" value="activer">
                                                 <button type="submit" class="btn btn-success">✅ Activer</button>
                                             </form>
                                         <?php else: ?>
-                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php"
+                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmploye.php"
                                                   onsubmit="return confirm('Bloquer ce compte ?');">
                                                 <input type="hidden" name="id_utilisateur" value="<?= $employe->getIdUtilisateur() ?>">
                                                 <input type="hidden" name="action" value="bloquer">
@@ -228,7 +282,7 @@ $employes = array_values($employes);
 
                                         <!-- Promouvoir accueil → admin uniquement -->
                                         <?php if ($employe->getRole() === 'accueil'): ?>
-                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php"
+                                            <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmploye.php"
                                                   onsubmit="return confirm('Promouvoir en administrateur ?');">
                                                 <input type="hidden" name="id_utilisateur" value="<?= $employe->getIdUtilisateur() ?>">
                                                 <input type="hidden" name="action" value="promouvoirAdmin">
@@ -237,7 +291,7 @@ $employes = array_values($employes);
                                         <?php endif; ?>
 
                                         <!-- Supprimer -->
-                                        <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmployes.php"
+                                        <form method="post" action="/cinema/src/traitement/admin/traitementGestionEmploye.php"
                                               onsubmit="return confirm('Supprimer définitivement cet employé ?');">
                                             <input type="hidden" name="id_utilisateur" value="<?= $employe->getIdUtilisateur() ?>">
                                             <input type="hidden" name="action" value="supprimer">

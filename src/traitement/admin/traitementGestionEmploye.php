@@ -30,6 +30,7 @@ $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
 $prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $mdp = isset($_POST['mdp']) ? trim($_POST['mdp']) : '';
+$mdpConfirm = isset($_POST['mdp']) ? trim($_POST['mdp']) : '';
 $tel = isset($_POST['tel']) ? ($_POST['tel']) : '';
 $adresse = isset($_POST['adresse']) ? trim($_POST['adresse']) : '';
 $date_de_naissance = !empty($_POST['date_de_naissance']) ? trim($_POST['date_de_naissance']) : null;
@@ -47,7 +48,7 @@ $utilisateurRepository = new UtilisateurRepository();
 
 // On s'assure que ce n'est pas un client
 
-function validerEmploye (string $nom, string $prenom, string $email, string $mdp,string $role): void
+function validerEmploye (string $nom, string $prenom, string $email, string $mdp, string $mdpConfirm, string $role): void
 {
     $erreurs = [];
 
@@ -72,6 +73,9 @@ function validerEmploye (string $nom, string $prenom, string $email, string $mdp
             $erreurs[] = "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
         }
     }
+    if ($mdp !== $mdpConfirm) {
+        $erreurs[] = "Les mots de passe ne correspondent pas.";
+    }
     if (!in_array($role, ['accueil', 'admin'])) {
         $erreurs[] = "Le rôle doit être 'accueil' ou 'admin'.";
     }
@@ -84,7 +88,7 @@ function validerEmploye (string $nom, string $prenom, string $email, string $mdp
 
 try{
     if ($action === 'ajouter') {
-        validerEmploye($nom, $prenom, $email, $mdp,$role);
+        validerEmploye($nom, $prenom, $email, $mdp, $mdpConfirm, $role);
 
         if ($utilisateurRepository->verifEmail($email)){
             $_SESSION['erreurs'] = ["Un compte avec cet email existe déjà."];
