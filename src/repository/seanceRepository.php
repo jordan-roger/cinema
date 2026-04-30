@@ -47,6 +47,25 @@ class SeanceRepository
         }
         return $tabSeances;
     }
+    public function getSeancesDuJour()
+    {
+        $sql = "SELECT * FROM seance WHERE date = CURDATE()";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->execute();
+        $results = $req->fetchAll();
+
+        $tabSeances = [];
+        foreach ($results as $result) {
+            $tabSeances[] = new Seance(
+                $result["id_seance"],
+                //$result["nombre_seance"],
+                $result["date"],
+                $result["id_film"],
+                $result["id_salle"]
+            );
+        }
+        return $tabSeances;
+    }
 
     public function ajouterSeance (Seance $seance){
         $sql = "INSERT INTO seance(date, id_film, id_salle) 

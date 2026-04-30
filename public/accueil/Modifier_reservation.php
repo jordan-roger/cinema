@@ -12,7 +12,7 @@ require_once '../../src/repository/FilmRepository.php';
 require_once '../../src/repository/SalleRepository.php';
 require_once '../../src/repository/UtilisateurRepository.php';
 
-if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'accueil') {
+/*if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'accueil') {
     header('Location: ../connexion.php');
     exit;
 }
@@ -20,7 +20,7 @@ if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'ac
 if (!isset($_GET['id'], $_GET['id_seance'])) {
     header('Location: index.php');
     exit;
-}
+}*/
 
 $idReservation = (int)$_GET['id'];
 $idSeance      = (int)$_GET['id_seance'];
