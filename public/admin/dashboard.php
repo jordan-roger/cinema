@@ -186,7 +186,7 @@ $lastClients = [
                     <small>Activation / désactivation</small>
                 </a>
 
-                <a href="employes.php" class="stat-card">
+                <a href="GestionEmployes.php" class="stat-card">
                     🧑‍💼 <br> Comptes admin / accueil <br>
                     <small>Création / suppression</small>
                 </a>

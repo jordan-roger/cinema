@@ -132,4 +132,11 @@ class UtilisateurRepository
         $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
         $req->execute();
     }
+    public function verifEmail(string $email): bool{
+        $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->execute(); // ← plus de double binding
+        return $req->fetchColumn() > 0;
+    }
 }

@@ -30,11 +30,11 @@ $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
 $prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $mdp = isset($_POST['mdp']) ? trim($_POST['mdp']) : '';
-$tel = isset($_POST['tel']) ? (int) ($_POST['tel']) : null;
-$adresse = isset($_POST['email']) ? trim($_POST['email']) : null;
+$tel = isset($_POST['tel']) ? ($_POST['tel']) : '';
+$adresse = isset($_POST['adresse']) ? trim($_POST['adresse']) : '';
 $date_de_naissance = !empty($_POST['date_de_naissance']) ? trim($_POST['date_de_naissance']) : null;
 $date_creation = !empty($_POST['date_creation']) ? trim($_POST['date_creation']) : null;
-
+$role = isset($_POST['role']) ? trim($_POST['role']) : '';
 
 if ($idUtilisateur <= 0 && $action !== 'ajouter') {
     $_SESSION['erreurs'] = ["Identifiant utilisateur invalide."];
@@ -42,29 +42,12 @@ if ($idUtilisateur <= 0 && $action !== 'ajouter') {
     exit;
 }
 
-if ((int)$_SESSION['id_utilisateur'] === $idUtilisateur) {
-    $_SESSION['erreurs'] = ["Vous ne pouvez pas effectuer cette action sur votre propre compte."];
-    header('Location: /cinema/public/admin/GestionEmployes.php');
-    exit;
-}
-
 $utilisateurRepository = new UtilisateurRepository();
-$utilisateur = $utilisateurRepository->getUtilisateur($idUtilisateur);
 
-if ($utilisateur === null) {
-    $_SESSION['erreurs'] = ["Utilisateur introuvable."];
-    header('Location: /cinema/public/admin/GestionEmployes.php');
-    exit;
-}
 
 // On s'assure que ce n'est pas un client
-if ($utilisateur->getRole() === 'user') {
-    $_SESSION['erreurs'] = ["Cette action n'est pas autorisée sur les comptes clients."];
-    header('Location: /cinema/public/admin/GestionEmployes.php');
-    exit;
-}
 
-function extracted (string $nom, string $prenom, string $email, string $mdp): void
+function validerEmploye (string $nom, string $prenom, string $email, string $mdp,string $role): void
 {
     $erreurs = [];
 
@@ -82,15 +65,15 @@ function extracted (string $nom, string $prenom, string $email, string $mdp): vo
         $erreurs['email'] = "Email trop long";
     }
     if ($mdp === '') {
-        $erreurs['mdp'] = "Le mot de passe est obligatoire.";
-    } elseif (mb_strlen($mdp) < 6) {
-        $erreurs['mdp'] = "Le mot de pase doit contenir au moins 6 caractères";
+        $erreurs[] = "Le mot de passe est obligatoire.";
     } else {
-        // Au moins 1 minuscule, 1 majuscule, 1 chiffre, 1 spécial + longueur mini 6
         $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:\'",.<>\/?\\|`~]).{6,}$/';
         if (!preg_match($regex, $mdp)) {
-            $erreurs['mdp'] = "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial";
+            $erreurs[] = "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
         }
+    }
+    if (!in_array($role, ['accueil', 'admin'])) {
+        $erreurs[] = "Le rôle doit être 'accueil' ou 'admin'.";
     }
     if (!empty($erreurs)) {
         $_SESSION['erreurs'] = $erreurs;
@@ -101,10 +84,150 @@ function extracted (string $nom, string $prenom, string $email, string $mdp): vo
 
 try{
     if ($action === 'ajouter') {
-        extracted($nom, $prenom, $email, $mdp);
-        $newEmploye = new Utilisateur(null, $nom, $prenom, $email, $mdp,$tel, $adresse, $date_de_naissance, "admin", "actif",$date_creation);
-        $utilisateurRepository->ajouterUtilisateur($newEmploye);
-        $_SESSION['succes'] = ['Le film a été ajouté avec succes'];
+        validerEmploye($nom, $prenom, $email, $mdp,$role);
 
+        if ($utilisateurRepository->verifEmail($email)){
+            $_SESSION['erreurs'] = ["Un compte avec cet email existe déjà."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        $mdpHash = password_hash($mdp, PASSWORD_DEFAULT);
+
+        $newEmploye = new Utilisateur(null, $nom, $prenom, $email, $mdpHash,$tel ?: null, $adresse?: null, $date_de_naissance, $role, "actif",date('Y-m-d'));
+        $utilisateurRepository->ajouterUtilisateur($newEmploye);
+        $_SESSION['succes'] = ["L'employé a été ajouté avec succes"];
+
+    }elseif ($action === 'modifier') {
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        validerEmploye($nom, $prenom, $email, $mdp,$role);
+        $employe->setNom($nom);
+        $employe->setPrenom($prenom);
+        $employe->setEmail($email);
+        $employe->setMdp(password_hash($mdp, PASSWORD_DEFAULT));        $employe->setTel($tel);
+        $employe->setAdresse($adresse);
+        $employe->setDateDeNaissance($date_de_naissance);
+        $employe->setRole($role);
+
+        $utilisateurRepository->modifierUtilisateur($employe);
+        $_SESSION['succes'] = ["L'employé a été modifié avec succès."];
+
+    }elseif ($action === 'bloquer') {
+
+        if ((int) $_SESSION['id_utilisateur'] === $idUtilisateur) {
+            $_SESSION['erreurs'] = ["Vous ne pouvez pas bloquer votre propre compte."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $utilisateurRepository->bloquerUtilisateur($idUtilisateur);
+        $_SESSION['succes'] = ["Le compte a été bloqué avec succès."];
+
+    }elseif ($action === 'activer') {
+
+        if ((int) $_SESSION['id_utilisateur'] === $idUtilisateur) {
+            $_SESSION['erreurs'] = ["Action non autorisée sur votre propre compte."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $employe->setEtatDuCompte('actif');
+        $utilisateurRepository->modifierUtilisateur($employe);
+        $_SESSION['succes'] = ["Le compte a été débloqué avec succès."];
+
+    }elseif ($action === 'desactiver') {
+
+        if ((int) $_SESSION['id_utilisateur'] === $idUtilisateur) {
+            $_SESSION['erreurs'] = ["Action non autorisée sur votre propre compte."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        if($employe->getEtatDuCompte() !== 'bloquer'){
+            $_SESSION['erreurs'] = ["Ce compte n'est pas inactif."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+
+        $employe->setEtatDuCompte('bloqué');
+        $utilisateurRepository->modifierUtilisateur($employe);
+        $_SESSION['succes'] = ["Le compte a été bloqué avec succès."];
+
+    }elseif ($action === 'promouvoirAdmin') {
+        if ((int) $_SESSION['id_utilisateur'] === $idUtilisateur) {
+            $_SESSION['erreurs'] = ["Action non autorisée sur votre propre compte."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        if($employe->getRole() === 'admin') {
+            $_SESSION['erreurs'] = ["Cet employé est deja un administrateur."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        if ($employe->getRole() !== 'accueil') {
+            $_SESSION['erreurs'] = ["Seul un employé d'accueil peut être promu administrateur."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        $employe->setRole('admin');
+        $utilisateurRepository->modifierUtilisateur($employe);
+        $_SESSION['succes'] = ["Le compte a été promut en administrateur avec succès."];
+
+    } elseif ($action === 'supprimer') {
+        if ((int) $_SESSION['id_utilisateur'] === $idUtilisateur) {
+            $_SESSION['erreurs'] = ["Action non autorisée sur votre propre compte."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        $employe = $utilisateurRepository->getUtilisateur($idUtilisateur);
+        if ($employe === null || $employe->getRole() === 'user') {
+            $_SESSION['erreurs'] = ["Employé introuvable."];
+            header('Location: /cinema/public/admin/GestionEmployes.php');
+            exit;
+        }
+        $utilisateurRepository->supprimerUtilisateur($idUtilisateur);
+        $_SESSION['succes'] = ["L'employé a été supprimé avec succès."];
+
+
+    } else {
+        $_SESSION['erreurs'] = ["Action non reconnue."];
     }
+
+} catch (PDOException $e) {
+    error_log("Erreur GestionEmployes : " . $e->getMessage());
+    $_SESSION['erreurs'] = ["Erreur : " . $e->getMessage()];
 }
+
+header('Location: /cinema/public/admin/GestionEmployes.php');
+exit;
