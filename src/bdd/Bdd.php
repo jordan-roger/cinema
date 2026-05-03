@@ -2,9 +2,9 @@
 class Bdd {
     private $connexionBdd;
     private $identifiant = "root";
-    private $motDePasse ="root";
+    private $motDePasse ="";
     private $nomBdd = "cinema";
-    private $host = "localhost:8889";
+    private $host = "localhost:3306";
 
     public function __construct()
     {

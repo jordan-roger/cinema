@@ -191,6 +191,11 @@ $lastClients = [
                     <small>Création / suppression</small>
                 </a>
 
+                <a href="Statistiques.php" class="stat-card">
+                    <br> Statistiques <br>
+                    <small>Réservations, films, clients</small>
+                </a>
+
             </div>
 
         </div>
