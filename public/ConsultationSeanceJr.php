@@ -10,9 +10,9 @@ $seanceRepository = new SeanceRepository();
 
 // Connexion BDD
 $pdo = new PDO(
-    "mysql:host=localhost;dbname=cinema;charset=utf8",
-    "root",
-    ""
+        "mysql:host=localhost;dbname=cinema;charset=utf8",
+        "root",
+        ""
 );
 
 // Détection du clic
