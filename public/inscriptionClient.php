@@ -14,7 +14,7 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
         :root {
             --bg-dark: #050507;
             --card-bg: #0d0d10;
-            --accent-red: #ff1a33;
+            --accent-red: #ff1a1a;
             --accent-glow: rgba(255, 26, 51, 0.45);
             --text-main: #e8e8e8;
             --text-dim: #777;
