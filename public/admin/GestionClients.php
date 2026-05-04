@@ -106,6 +106,8 @@ $clients = array_filter($tousLesUtilisateurs, function(Utilisateur $u) {
             <a class="nav-item" href="GestionSeances.php">📅 Séances</a>
             <a class="nav-item" href="GestionReservation.php">🎟️ Réservations</a>
             <a class="nav-item" href="GestionCodePromo.php">🏷️ Codes promo</a>
+            <div class="nav-label">Analyse</div>
+            <a class="nav-item active" href="Statistiques.php">Statistiques</a>
         </nav>
         <div class="sidebar-footer">
             <small>Connecté en tant qu'admin</small>
