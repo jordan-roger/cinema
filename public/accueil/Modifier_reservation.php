@@ -101,7 +101,7 @@ $placesDisponibles = $salle->getCapacite() - $placesOccupees;
             </div>
         </div>
 
-        <form action="../../traitement/accueil/traitement_modifier.php" method="POST">
+        <form action="../../src/traitement/accueil/traitement_modifier.php" method="POST">
             <input type="hidden" name="id_reservation" value="<?= $idReservation ?>">
             <input type="hidden" name="id_seance" value="<?= $idSeance ?>">
             <input type="hidden" name="places_disponibles" value="<?= $placesDisponibles ?>">

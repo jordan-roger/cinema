@@ -114,7 +114,6 @@ $tousLesFilms = $filmRepository->getAllFilms();
         </header>
 
         <div class="content">
-
             <?php if (!empty($_SESSION['succes'])): ?>
                 <div class="alert alert-success">
                     <?php foreach ($_SESSION['succes'] as $msg): ?>

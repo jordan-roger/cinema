@@ -39,7 +39,7 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réservations — <?= htmlspecialchars($film->getNom()) ?></title>
+    <title> Réservations </title>
     <link rel="stylesheet" href="accueil.css">
 </head>
 <body>
@@ -84,6 +84,9 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
                 <?php foreach ($reservations as $r):
                     $client = $userRepo->getUtilisateur($r->getIdUtilisateur());
 
+                    $nomClient = $client ? htmlspecialchars($client->getNom()) : 'Client #' . $r->getIdUtilisateur();
+                    $telClient = $client ? htmlspecialchars($client->getTel() ?? '—') : '—';
+
                     $total = ($r->getNbPlace() * 15)
                             + ($r->getNbPlaceStudent() * 10)
                             + ($r->getNbPlaceSenior() * 5);
@@ -97,9 +100,9 @@ $reservations = $reservRepo->getReservationsBySeance($idSeance);
                     <tr>
                         <td style="color:var(--texte-muted)">#<?= $r->getIdReservation() ?></td>
                         <td>
-                            <strong><?= htmlspecialchars($client->getNom()) ?></strong><br>
+                            <strong><?= $nomClient ?></strong><br>
                             <small style="color:var(--texte-muted)">
-                                Tél : <?= htmlspecialchars($client->getTel() ?? '—') ?>
+                                Tél : <?= $telClient ?>
                             </small>
                         </td>
                         <td>

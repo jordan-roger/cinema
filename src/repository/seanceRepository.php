@@ -40,7 +40,7 @@ class SeanceRepository
         foreach ($results as $result) {
             $tabSeances[] = new Seance(
                 $result["id_seance"],
-                $result["date_seance"],
+                $result["date"],
                 $result["id_film"],
                 $result["id_salle"]
             );
@@ -49,7 +49,7 @@ class SeanceRepository
     }
     public function getSeancesDuJour()
     {
-        $sql = "SELECT * FROM seance WHERE date = CURDATE()";
+        $sql = "SELECT * FROM seance WHERE DATE(date) = CURDATE();";
         $req = $this->connexionBdd->prepare($sql);
         $req->execute();
         $results = $req->fetchAll();

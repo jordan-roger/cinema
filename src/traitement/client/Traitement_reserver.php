@@ -1,14 +1,15 @@
 <?php
 session_start();
-require_once '../../src/bdd/Bdd.php';
-require_once '../../src/modele/Reservation.php';
-require_once '../../src/modele/CodePromo.php';
-require_once '../../src/modele/Seance.php';
-require_once '../../src/modele/Salle.php';
-require_once '../../src/repository/ReservationRepository.php';
-require_once '../../src/repository/SeanceRepository.php';
-require_once '../../src/repository/SalleRepository.php';
-require_once '../../src/repository/CodePromoRepository.php';
+require_once __DIR__ . '/../../../src/bdd/Bdd.php';
+require_once __DIR__ . '/../../../src/modele/CodePromo.php';
+require_once __DIR__ . '/../../../src/repository/CodePromoRepository.php';
+require_once __DIR__ . '/../../../src/modele/reservation.php';
+require_once __DIR__ . '/../../../src/repository/reservationRepository.php';
+require_once __DIR__ . '/../../../src/modele/seance.php';
+require_once __DIR__ . '/../../../src/repository/seanceRepository.php';
+require_once __DIR__ . '/../../../src/modele/salle.php';
+require_once __DIR__ . '/../../../src/repository/salleRepository.php';
+
 
 //if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {
 //    header('Location: ../connexion.php');
@@ -16,7 +17,7 @@ require_once '../../src/repository/CodePromoRepository.php';
 //}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../public/client/reserver.php');
+    header('Location: ../../public/client/Reserver.php');
     exit;
 }
 

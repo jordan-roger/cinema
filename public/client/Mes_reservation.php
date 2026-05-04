@@ -8,10 +8,10 @@ require_once '../../src/repository/SeanceRepository.php';
 require_once '../../src/repository/FilmRepository.php';
 require_once '../../src/repository/ReservationRepository.php';
 
-if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {
+/*if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {
     header('Location: ../connexion.php');
     exit;
-}
+}*/
 
 $idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];
 
@@ -38,8 +38,8 @@ $today = date('Y-m-d');
 <nav>
     <a href="../index.php" class="nav-logo">CINÉ<span>L</span></a>
     <div class="nav-links">
-        <a href="reserver.php">Réserver</a>
-        <a href="mes_reservations.php" class="active">Mes réservations</a>
+        <a href="Reserver.php">Réserver</a>
+        <a href="Mes_reservation.php" class="active">Mes réservations</a>
         <span class="nav-badge">Client</span>
         <a href="../deconnexion.php" class="btn btn-outline btn-sm">Déconnexion</a>
     </div>

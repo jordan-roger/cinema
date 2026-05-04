@@ -1,4 +1,13 @@
 <?php
+
+session_start();
+
+require_once __DIR__ . '/../src/bdd/Bdd.php';
+require_once __DIR__ . '/../src/modele/seance.php';
+require_once __DIR__ . '/../src/repository/seanceRepository.php';
+
+$seanceRepository = new SeanceRepository();
+
 // Connexion BDD
 $pdo = new PDO(
     "mysql:host=localhost;dbname=cinema;charset=utf8",

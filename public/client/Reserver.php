@@ -71,8 +71,8 @@ function dejaReserve($reservRepo, $idSeance, $idUtilisateur) {
 <nav>
     <a href="../index.php" class="nav-logo">CINÉ<span>L</span></a>
     <div class="nav-links">
-        <a href="reserver.php" class="active">Réserver</a>
-        <a href="mes_reservations.php">Mes réservations</a>
+        <a href="Reserver.php" class="active">Réserver</a>
+        <a href="Mes_reservation.php">Mes réservations</a>
         <span class="nav-badge">Client</span>
         <a href="../deconnexion.php" class="btn btn-outline btn-sm">Déconnexion</a>
     </div>
@@ -165,7 +165,7 @@ function dejaReserve($reservRepo, $idSeance, $idUtilisateur) {
 
                         <!-- TARIF CHOIX -->
                         <?php if (!$dejaReserve && !$complet && $reservationOuverte): ?>
-                            <form action="/cinema/traitement/client/traitement_reserver.php" method="POST">
+                            <form action="/cinema/src/traitement/client/Traitement_reserver.php" method="POST">
                                 <input type="hidden" name="id_seance" value="<?= $seance->getIdSeance() ?>">
 
                                 <div class="tarif-choix">

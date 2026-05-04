@@ -112,7 +112,7 @@ $total = ($reservation->getNbPlace() * 15)
             </div>
         </div>
 
-        <form action="../../traitement/accueil/traitement_annuler.php" method="POST">
+        <form action="../../src/traitement/accueil/traitement_annuler.php" method="POST">
             <input type="hidden" name="id_reservation" value="<?= $idReservation ?>">
             <input type="hidden" name="id_seance" value="<?= $idSeance ?>">
 

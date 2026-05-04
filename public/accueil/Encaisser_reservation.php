@@ -129,7 +129,7 @@ $total = round($sousTotal - $reduction, 2);
         </div>
 
         <!-- MODE DE PAIEMENT -->
-        <form action="../../traitement/accueil/traitement_encaisser.php" method="POST">
+        <form action="../../src/traitement/accueil/traitement_encaisser.php" method="POST">
             <input type="hidden" name="id_reservation" value="<?= $idReservation ?>">
             <input type="hidden" name="id_seance" value="<?= $idSeance ?>">
 
