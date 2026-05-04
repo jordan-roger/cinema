@@ -8,8 +8,8 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTÈME D'ENREGISTREMENT // V.2099</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SYSTÈME D'ENREGISTREMENT // V.2099</title>
     <style>
         :root {
             --bg-dark: #050507;
