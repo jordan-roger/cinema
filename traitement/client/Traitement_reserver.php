@@ -1,13 +1,13 @@
 <?php
 session_start();
 require_once '../../src/bdd/Bdd.php';
-require_once '../../src/modele/Reservation.php';
+require_once '../../src/modele/reservation.php';
 require_once '../../src/modele/CodePromo.php';
-require_once '../../src/modele/Seance.php';
-require_once '../../src/modele/Salle.php';
-require_once '../../src/repository/ReservationRepository.php';
-require_once '../../src/repository/SeanceRepository.php';
-require_once '../../src/repository/SalleRepository.php';
+require_once '../../src/modele/seance.php';
+require_once '../../src/modele/salle.php';
+require_once '../../src/repository/reservationRepository.php';
+require_once '../../src/repository/seanceRepository.php';
+require_once '../../src/repository/salleRepository.php';
 require_once '../../src/repository/CodePromoRepository.php';
 
 //if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {

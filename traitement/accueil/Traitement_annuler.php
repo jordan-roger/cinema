@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once '../../src/bdd/Bdd.php';
-require_once '../../src/modele/Reservation.php';
-require_once '../../src/repository/ReservationRepository.php';
+require_once '../../src/modele/reservation.php';
+require_once '../../src/repository/reservationRepository.php';
 
 if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'accueil') {
     header('Location: ../connexion.php');

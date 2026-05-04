@@ -105,4 +105,24 @@ class SeanceRepository
         $req->bindValue(':id_seance', $idSeance, PDO::PARAM_INT);
         $req->execute();
     }
+
+    public function getFuturSeances()
+    {
+        $sql = "SELECT * FROM seance WHERE date >= CURDATE() ORDER BY date ASC";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->execute();
+        $results = $req->fetchAll();
+
+        $tabSeances = [];
+        foreach ($results as $result) {
+            $tabSeances[] = new Seance(
+                $result["id_seance"],
+                $result["nombre_seance"],
+                $result["date"],
+                $result["id_film"],
+                $result["id_salle"]
+            );
+        }
+        return $tabSeances;
+    }
 }

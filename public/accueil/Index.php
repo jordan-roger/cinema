@@ -21,6 +21,7 @@ $salleRepo  = new SalleRepository();
 $reservRepo = new ReservationRepository();
 
 $seances = $seanceRepo->getSeancesDuJour();
+$seancesFutur = $seanceRepo->getFuturSeances();
 $today   = date('d/m/Y');
 ?>
 <!DOCTYPE html>
@@ -57,6 +58,59 @@ $today   = date('d/m/Y');
     <?php else: ?>
         <div class="seances-grid">
             <?php foreach ($seances as $seance):
+                $film  = $filmRepo->getFilm($seance->getIdFilm());
+                $salle = $salleRepo->getSalle($seance->getIdSalle());
+                $reservations = $reservRepo->getReservationsBySeance($seance->getIdSeance());
+
+                if (!$film || !$salle) continue;
+
+                $nbTotal    = count($reservations);
+                $nbEncaisse = count(array_filter($reservations, fn($r) => $r->getStatut() === 'Encaissée'));
+                $nbAValider = count(array_filter($reservations, fn($r) => $r->getStatut() === 'A valider'));
+                ?>
+                <div class="seance-card">
+                    <div class="seance-card-header">
+                        <span class="seance-film"><?= htmlspecialchars($film->getNom()) ?></span>
+                        <span class="seance-salle"><?= htmlspecialchars($salle->getNom()) ?></span>
+                    </div>
+                    <div class="seance-card-body">
+                        <div class="seance-stats">
+                            <div class="stat">
+                                <span class="stat-value"><?= $nbTotal ?></span>
+                                <span class="stat-label">Réservations</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" style="color:var(--warning)"><?= $nbAValider ?></span>
+                                <span class="stat-label">À valider</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" style="color:var(--succes)"><?= $nbEncaisse ?></span>
+                                <span class="stat-label">Encaissées</span>
+                            </div>
+                        </div>
+                        <a href="reservations_seance.php?id_seance=<?= $seance->getIdSeance() ?>" class="btn btn-rouge">
+                            Voir les réservations →
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="page-header">
+        <h1>Prochaines séances</h1>
+        <p><?= $today ?> — <?= count($seancesFutur) ?> séance<?= count($seancesFutur) > 1 ? 's' : '' ?> programmée<?= count($seancesFutur) > 1 ? 's' : '' ?></p>
+    </div>
+
+    <?php if (empty($seancesFutur)): ?>
+        <div class="empty">
+            <div class="empty-icon">🎬</div>
+            <h3>Aucune séance aujourd'hui</h3>
+            <p>Aucune séance n'est programmée pour ce jour.</p>
+        </div>
+    <?php else: ?>
+        <div class="seances-grid">
+            <?php foreach ($seancesFutur as $seance):
                 $film  = $filmRepo->getFilm($seance->getIdFilm());
                 $salle = $salleRepo->getSalle($seance->getIdSalle());
                 $reservations = $reservRepo->getReservationsBySeance($seance->getIdSeance());
