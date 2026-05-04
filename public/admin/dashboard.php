@@ -82,6 +82,8 @@ $lastClients = [
 
             <div class="nav-label">Comptes</div>
             <a class="nav-item" href="gestionEmployes.php">🧑‍💼 Admin & Accueil</a>
+            <div class="nav-label">Analyse</div>
+            <a class="nav-item active" href="Statistiques.php">Statistiques</a>
         </nav>
     </aside>
 
