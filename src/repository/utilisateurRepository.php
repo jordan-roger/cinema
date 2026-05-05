@@ -136,7 +136,62 @@ class UtilisateurRepository
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
         $req = $this->connexionBdd->prepare($sql);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
-        $req->execute(); // ← plus de double binding
+        $req->execute(); //  plus de double binding
         return $req->fetchColumn() > 0;
     }
+    public function modifierProfil(int $idUtilisateur, string $nom, string $prenom, string $email, ?string $tel, ?string $adresse, ?string $dateNaissance): void
+    {
+        $sql = "UPDATE utilisateur 
+                SET nom               = :nom,
+                    prenom            = :prenom,
+                    email             = :email,
+                    tel               = :tel,
+                    adresse           = :adresse,
+                    date_de_naissance = :date_de_naissance
+                WHERE id_utilisateur  = :id_utilisateur";
+
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':nom',               $nom);
+        $req->bindValue(':prenom',            $prenom);
+        $req->bindValue(':email',             $email);
+        $req->bindValue(':tel',               $tel);
+        $req->bindValue(':adresse',           $adresse);
+        $req->bindValue(':date_de_naissance', $dateNaissance);
+        $req->bindValue(':id_utilisateur',    $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+    }
+
+    public function modifierMotDePasse(int $idUtilisateur, string $nouveauMdpHash): void
+    {
+        $sql = "UPDATE utilisateur SET mdp = :mdp WHERE id_utilisateur = :id_utilisateur";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':mdp',            $nouveauMdpHash);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+    }
+
+    // Récupérer le mdp hashé pour vérification avant changement
+    public function getMdpHash(int $idUtilisateur): string|false
+    {
+        $sql = "SELECT mdp FROM utilisateur WHERE id_utilisateur = :id_utilisateur LIMIT 1";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+        $result = $req->fetch();
+        return $result ? $result['mdp'] : false;
+    }
+
+    // Vérifier si un email existe pour un autre utilisateur — modification profil
+    public function emailExistePourAutreUtilisateur(string $email, int $idUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) FROM utilisateur 
+                WHERE email = :email 
+                AND id_utilisateur != :id_utilisateur";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':email',          $email);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchColumn() > 0;
+    }
+
 }

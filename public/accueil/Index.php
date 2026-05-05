@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../src/bdd/Bdd.php';
-require_once '../src/modele/Film.php';
-require_once '../src/repository/filmRepository.php';
+require_once __DIR__ . '/../../src/bdd/Bdd.php';
+require_once __DIR__ . '/../../src/modele/Film.php';
+require_once __DIR__ . '/../../src/repository/filmRepository.php';
 
 $filmRepo = new FilmRepository();
 $films    = $filmRepo->getAllFilms();

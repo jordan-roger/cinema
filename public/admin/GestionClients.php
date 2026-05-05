@@ -4,7 +4,6 @@ session_start();
 require_once __DIR__ . '/../../src/bdd/Bdd.php';
 require_once __DIR__ . '/../../src/modele/utilisateur.php';
 require_once __DIR__ . '/../../src/repository/utilisateurRepository.php';
-echo __DIR__;
 // Vérification connexion et rôle admin
 /*if (empty($_SESSION['role']) || $_SESSION['role'] !== 'administrateur') {
     $_SESSION['erreurs'] = ["Accès refusé."];

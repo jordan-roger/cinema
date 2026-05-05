@@ -13,8 +13,6 @@ require_once __DIR__ . '/../../src/repository/reservationRepository.php';
 
 $reservationRepository = new ReservationRepository();
 $ttLeReservations = $reservationRepository->getAllReservationsAvecDetails();
-echo count($ttLeReservations); // combien de réservations sont retournées
-var_dump($ttLeReservations);   // voir le contenu brut
 // Filtrage par statut via GET pour pas renvoyer un form a chaque rafrachissement
 $filtreStatut  = isset($_GET['statut']) ? $_GET['statut'] : '';
 //$filtreSeance  = isset($_GET['id_seance']) ? (int) $_GET['id_seance'] : 0;

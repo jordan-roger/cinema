@@ -197,5 +197,34 @@ class ReservationRepository
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getReservationsByUtilisateur(int $idUtilisateur): array
+    {
+        $sql = "SELECT * FROM reservation 
+            WHERE id_utilisateur = :id_utilisateur 
+            ORDER BY id_reservation DESC";
+        $req = $this->connexionBdd->prepare($sql);
+        $req->bindValue(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+        $results = $req->fetchAll();
+
+        $tabReservations = [];
+        foreach ($results as $result) {
+            $tabReservations[] = new Reservation(
+                $result["id_reservation"],
+                $result["nbplace"],
+                $result["nbplace_student"],
+                $result["nbplace_senior"],
+                $result["tarif_student"],
+                $result["tarif_senior"],
+                $result["tarif_normal"],
+                $result["id_utilisateur"],
+                $result["id_seance"],
+                $result["id_code_promo"],
+                $result["statut"],
+                $result["mode_paiement"]
+            );
+        }
+        return $tabReservations;
+    }
 
 }

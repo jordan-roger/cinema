@@ -11,16 +11,18 @@ require_once '../../src/repository/ReservationRepository.php';
 /*if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'user') {
     header('Location: ../connexion.php');
     exit;
-}*/
+}
 
-$idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];
+$idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];*/
+$idUtilisateur = (int) ($_SESSION['id_utilisateur'] ?? 0);
+$prenom        = $_SESSION['prenom'] ?? 'Visiteur';
 
 $reservRepo = new ReservationRepository();
 $seanceRepo = new SeanceRepository();
 $filmRepo   = new FilmRepository();
 
 // Toutes les réservations de l'utilisateur
-$toutesReservations = $reservRepo->getAllReservations();
+$toutesReservations = $reservRepo->getReservationsByUtilisateur($idUtilisateur);
 $mesReservations = array_filter($toutesReservations, fn($r) => $r->getIdUtilisateur() == $idUtilisateur);
 
 $today = date('Y-m-d');
@@ -36,10 +38,12 @@ $today = date('Y-m-d');
 <body>
 
 <nav>
-    <a href="../index.php" class="nav-logo">CINÉ<span>L</span></a>
+    <a href="index.php" class="nav-logo">CINÉ<span>L</span></a>
     <div class="nav-links">
-        <a href="Reserver.php">Réserver</a>
-        <a href="Mes_reservation.php" class="active">Mes réservations</a>
+        <a href="/cinema/public/client/acceuilClient.php">Accueil</a>
+        <a href="creer_reservation.php">Réserver</a>
+        <a href="mes_reservations.php" class="active">Mes réservations</a>
+        <a href="/cinema/public/client/profil.php">Mon profil</a>
         <span class="nav-badge">Client</span>
         <a href="../deconnexion.php" class="btn btn-outline btn-sm">Déconnexion</a>
     </div>
@@ -51,7 +55,7 @@ $today = date('Y-m-d');
         <p><?= count($mesReservations) ?> réservation<?= count($mesReservations) > 1 ? 's' : '' ?> au total</p>
     </div>
 
-    <?php if ($_GET['message'] ?? '' === 'annule'): ?>
+    <?php if (isset($_GET['message']) && $_GET['message'] === 'annule'): ?>
         <div class="alerte alerte-succes">✅ Réservation annulée avec succès.</div>
     <?php endif; ?>
 
@@ -61,7 +65,7 @@ $today = date('Y-m-d');
             <h3>Aucune réservation</h3>
             <p>Vous n'avez pas encore réservé de place.</p>
             <br>
-            <a href="reserver.php" class="btn btn-rouge">Réserver maintenant</a>
+            <a href="creer_reservation.php" class="btn btn-rouge">Réserver maintenant</a>
         </div>
     <?php else: ?>
         <div class="table-wrapper">
@@ -80,11 +84,14 @@ $today = date('Y-m-d');
                 <tbody>
                 <?php foreach ($mesReservations as $r):
                     $seance = $seanceRepo->getSeance($r->getIdSeance());
-                    $film   = $filmRepo->getFilm($seance->getIdFilm());
+                    if ($seance === null) continue; // ← sauter les réservations orphelines
+                    $film = $filmRepo->getFilm($seance->getIdFilm());
+                    if ($film === null) continue;
 
                     // Calcul tarif
-                    $montant = ($r->getNbPlace() * 15) + ($r->getNbPlaceStudent() * 10) + ($r->getNbPlaceSenior() * 5);
-
+                    $montant = ($r->getNbPlace() * $r->getTarifNormal())
+                            + ($r->getNbPlaceStudent() * $r->getTarifStudent())
+                            + ($r->getNbPlaceSenior() * $r->getTarifSenior());
                     // Type de tarif
                     if ($r->getNbPlaceStudent() > 0) $typeTarif = 'Étudiant';
                     elseif ($r->getNbPlaceSenior() > 0) $typeTarif = 'Senior';

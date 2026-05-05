@@ -69,10 +69,12 @@ function dejaReserve($reservRepo, $idSeance, $idUtilisateur) {
 <body>
 
 <nav>
-    <a href="../index.php" class="nav-logo">CINÉ<span>L</span></a>
+    <a href="index.php" class="nav-logo">CINÉ<span>L</span></a>
     <div class="nav-links">
-        <a href="Reserver.php" class="active">Réserver</a>
-        <a href="Mes_reservation.php">Mes réservations</a>
+        <a href="/cinema/public/client/acceuilClient.php">Accueil</a>
+        <a href="creer_reservation.php" class="active">Réserver</a>
+        <a href="mes_reservations.php">Mes réservations</a>
+        <a href="/cinema/public/client/profil.php">Mon profil</a>
         <span class="nav-badge">Client</span>
         <a href="../deconnexion.php" class="btn btn-outline btn-sm">Déconnexion</a>
     </div>

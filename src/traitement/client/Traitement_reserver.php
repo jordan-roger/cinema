@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../../src/repository/salleRepository.php';
 //}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../public/client/Reserver.php');
+    header('Location: ../../public/client/creer_reservation.php');
     exit;
 }
 
