@@ -9,12 +9,12 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTÈME D'ENREGISTREMENT // V.2099</title>
+    <title>Inscription</title>
     <style>
         :root {
             --bg-dark: #050507;
             --card-bg: #0d0d10;
-            --accent-red: #ff1a1a;
+            --accent-red: #ff1a33;
             --accent-glow: rgba(255, 26, 51, 0.45);
             --text-main: #e8e8e8;
             --text-dim: #777;
@@ -52,7 +52,7 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
         }
 
         form::before {
-            content: "GOTHAM_NET // REGISTRATION PROTOCOL";
+            content: "INSCRIPTION";
             position: absolute;
             top: 14px;
             right: 18px;
@@ -65,12 +65,21 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
 
         h2 {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 10px;
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 4px;
             font-size: 1.4rem;
             text-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
         }
 
         label {
@@ -155,6 +164,34 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
             color: #ffb3c1;
         }
 
+        .login-link {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .login-link p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .login-link a {
+            color: var(--accent-red);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .login-link a:hover {
+            color: #ff6677;
+            text-shadow: 0 0 10px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
         form::after {
             content: "";
             position: absolute;
@@ -174,11 +211,12 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
 </head>
 <body>
 <form method="POST" action="../src/traitement/traitementInscription.php">
-    <h2>Initialisation Compte</h2>
+    <h2>Créer un compte</h2>
+    <div class="subtitle">Rejoignez-nous</div>
 
     <?php if (!empty($errors)): ?>
         <div class="error-box">
-            <strong>⚠ Accès refusé :</strong>
+            <strong>⚠ Erreur :</strong>
             <ul>
                 <?php foreach ($errors as $err): ?>
                     <li><?= htmlspecialchars($err) ?></li>
@@ -187,28 +225,41 @@ unset($_SESSION['errors'], $_SESSION['old_input']);
         </div>
     <?php endif; ?>
 
-    <label for="nom">Identifiant / Nom :</label>
+    <label for="nom">Nom :</label>
     <input type="text" id="nom" name="nom" required minlength="2" maxlength="100"
            value="<?= htmlspecialchars($old['nom'] ?? '') ?>" autocomplete="name">
 
-    <label for="mdp">Clé d'accès :</label>
-    <input type="password" id="mdp" name="mdp" required minlength="8" autocomplete="new-password">
-    <p class="info">> Protocole de sécurité : min. 8 caractères</p>
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" name="prenom" required minlength="2" maxlength="100"
+           value="<?= htmlspecialchars($old['prenom'] ?? '') ?>" autocomplete="given-name">
 
-    <label for="tel">Fréquence de contact :</label>
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" required maxlength="100"
+           value="<?= htmlspecialchars($old['email'] ?? '') ?>" autocomplete="email">
+
+    <label for="mdp">Mot de passe :</label>
+    <input type="password" id="mdp" name="mdp" required minlength="8" autocomplete="new-password">
+    <p class="info">Minimum 8 caractères</p>
+
+    <label for="tel">Téléphone :</label>
     <input type="tel" id="tel" name="tel" required pattern="[0-9\s\-\+]{8,15}"
            value="<?= htmlspecialchars($old['tel'] ?? '') ?>" autocomplete="tel">
 
-    <label for="adresse">Coordonnées physiques :</label>
+    <label for="adresse">Adresse :</label>
     <textarea id="adresse" name="adresse" required maxlength="255"
               autocomplete="street-address"><?= htmlspecialchars($old['adresse'] ?? '') ?></textarea>
 
-    <label for="date_de_naissance">Date d'activation biologique :</label>
+    <label for="date_de_naissance">Date de naissance :</label>
     <input type="date" id="date_de_naissance" name="date_de_naissance" required
            max="<?= date('Y-m-d', strtotime('-13 years')) ?>"
            value="<?= htmlspecialchars($old['date_de_naissance'] ?? '') ?>">
 
-    <button type="submit">Enregistrer</button>
+    <button type="submit">S'inscrire</button>
+
+    <div class="login-link">
+        <p>Déjà un compte ?</p>
+        <a href="connexionClient.php">[ Se connecter ]</a>
+    </div>
 </form>
 </body>
 </html>
